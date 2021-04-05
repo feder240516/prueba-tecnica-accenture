@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.accenture.pruebatecnica.model.Pedido;
+import com.accenture.pruebatecnica.model.Saldo;
 import com.accenture.pruebatecnica.model.Subpedido;
 import com.accenture.pruebatecnica.model.SubpedidoConId;
 import com.accenture.pruebatecnica.services.PedidosService;
@@ -94,8 +95,9 @@ public class PedidosController {
 	}
 	
 	@GetMapping("/usuarios/{idUsuario}/saldo")
-	public double obtenerSaldo(@PathVariable long idUsuario){
-		return usuariosService.obtenerSaldo(idUsuario);
+	public Saldo obtenerSaldo(@PathVariable long idUsuario){
+		double saldo = usuariosService.obtenerSaldo(idUsuario);
+		return new Saldo(saldo);
 	}
 	
 	/*@RequestMapping(value="/pedido", method=RequestMethod.POST)
