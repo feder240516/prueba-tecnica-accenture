@@ -12,6 +12,12 @@ public class Subpedido {
 		this.id = id;
 	}
 
+	/*public Subpedido(int cantidad, long fkIdProducto) {
+		super();
+		this.cantidad = cantidad;
+		this.fkIdProducto = fkIdProducto;
+	}*/
+
 	public Subpedido(long id, Producto producto, int cantidad, double subtotal, long fkIdProducto) {
 		super();
 		this.id = id;

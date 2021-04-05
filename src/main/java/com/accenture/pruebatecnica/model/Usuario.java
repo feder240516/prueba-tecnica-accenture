@@ -6,14 +6,16 @@ public class Usuario {
 	private String clave;
 	private String nombre;
 	private String direccion;
+	private double saldo;
 	
-	public Usuario(long id, String email, String clave, String nombre, String direccion) {
+	public Usuario(long id, String email, String clave, String nombre, String direccion, double saldo) {
 		super();
 		this.id = id;
 		this.email = email;
 		this.clave = clave;
 		this.nombre = nombre;
 		this.direccion = direccion;
+		this.saldo = saldo;
 	}
 	
 	public long getId() {
@@ -45,6 +47,20 @@ public class Usuario {
 	}
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
+	}
+
+	public double getSaldo() {
+		return saldo;
+	}
+
+	public void setSaldo(double saldo) {
+		this.saldo = saldo;
+	}
+	
+	public boolean sumarSaldo(double dsaldo) {
+		if (saldo + dsaldo < 0) return false;
+		saldo += dsaldo;
+		return true;
 	}
 
 	@Override

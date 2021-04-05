@@ -107,6 +107,13 @@ public class Pedido {
 		this.subpedidos.add(subpedido);
 	}
 	
+	public void setSubpedidos(List<Subpedido> subpedidos) {
+		this.subpedidos.clear();
+		subpedidos.forEach(subpedido -> {
+			addSubpedido(subpedido);
+		});
+	}
+	
 	public boolean eliminarSubpedido(long idSubpedido) {
 		return this.subpedidos.remove(new Subpedido(idSubpedido));
 	}

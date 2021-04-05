@@ -25,7 +25,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.accenture.pruebatecnica.model.Pedido;
 import com.accenture.pruebatecnica.model.Subpedido;
+import com.accenture.pruebatecnica.model.SubpedidoConId;
 import com.accenture.pruebatecnica.services.PedidosService;
+import com.accenture.pruebatecnica.services.UsuariosService;
 
 @CrossOrigin
 @RestController
@@ -33,6 +35,8 @@ public class PedidosController {
 	
 	@Autowired
 	PedidosService pedidosService;
+	@Autowired
+	UsuariosService usuariosService;
 	
 	/*@PostMapping("/pedidos")
 	public ResponseEntity<Void> crearPedido(@RequestBody Pedido pedido){
@@ -80,6 +84,18 @@ public class PedidosController {
 	@GetMapping("/pedidos/{idUsuario}/{idPedido}")
 	public Pedido obtenerPedido(@PathVariable long idUsuario, @PathVariable long idPedido){
 		return pedidosService.obtenerPedido(idUsuario, idPedido);
+	}
+	
+	@PutMapping("/pedidos/{idUsuario}/{idPedido}")
+	public ResponseEntity<Void> editarPedido(@PathVariable long idUsuario, @PathVariable long idPedido, @RequestBody List<SubpedidoConId> subpedidos){
+		boolean exito = pedidosService.modificarPedido(idUsuario, subpedidos);
+		if (exito) return ResponseEntity.ok().build();
+		else return ResponseEntity.badRequest().build();
+	}
+	
+	@GetMapping("/usuarios/{idUsuario}/saldo")
+	public double obtenerSaldo(@PathVariable long idUsuario){
+		return usuariosService.obtenerSaldo(idUsuario);
 	}
 	
 	/*@RequestMapping(value="/pedido", method=RequestMethod.POST)
