@@ -100,6 +100,13 @@ public class PedidosController {
 		return new Saldo(saldo);
 	}
 	
+	@DeleteMapping("/pedidos/{idUsuario}/{idPedido}")
+	public ResponseEntity<Void> eliminarPedido(@PathVariable long idUsuario, @PathVariable long idPedido){
+		boolean exito = pedidosService.eliminarPedido(idPedido, idUsuario);
+		if (exito) return ResponseEntity.ok().build();
+		else return ResponseEntity.badRequest().build();
+	}
+	
 	/*@RequestMapping(value="/pedido", method=RequestMethod.POST)
 	public String mensajeCompra(@RequestParam String email, @RequestParam String password, ModelMap model) {
 		model.put("email", email);
