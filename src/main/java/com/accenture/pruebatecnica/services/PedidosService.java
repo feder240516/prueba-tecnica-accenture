@@ -24,8 +24,8 @@ public class PedidosService {
 	
 	private static Map<Long, Pedido> pedidos = new HashMap<>();  // idPedido -> Pedido
 	private static Map<Long, Pedido> carritos = new HashMap<>(); // idUsuario -> Carrito
-	private static List<PedidoProducto> pedidosProductos = new ArrayList<>();
 	private static long siguienteID = 1;
+	private static long siguienteIDSubpedido = 1;
 	
 	public List<Pedido> obtenerPedidosPorUsuario(long idUsuario){
 		return pedidos.values()
@@ -34,11 +34,16 @@ public class PedidosService {
 					.collect(Collectors.toList());
 	}
 	
+	public Pedido obtenerPedido(long idUsuario, long idPedido) {
+		return pedidos.get(idPedido);
+	}
+	
 	public boolean agregarAlCarrito(long idUsuario, long idProducto, int cantidad) {
 		Producto producto = productosService.obtenerPorID(idProducto);
-		if (producto == null) { return false; }
+		if (producto == null || cantidad == 0) { return false; }
 		Pedido carrito = obtenerCarrito(idUsuario);
-		carrito.addSubpedido(producto, cantidad);
+		long idSubpedido = siguienteIDSubpedido++;
+		carrito.addSubpedido(idSubpedido, producto, cantidad);
 		return true;
 	}
 	
@@ -57,9 +62,16 @@ public class PedidosService {
 		Pedido carrito = carritos.get(idUsuario);
 		if (carrito == null || carrito.vacio()) { return false; }
 		carrito.calcularTotal();
+		carrito.calcularFecha();
 		pedidos.put(carrito.getId(), carrito);
 		carritos.remove(idUsuario);
 		return true;
+	}
+	
+	public boolean eliminarSubpedido(long idUsuario, long idSubpedido) {
+		Pedido carrito = carritos.get(idUsuario);
+		if (carrito == null || carrito.vacio()) { return false; }
+		return carrito.eliminarSubpedido(idSubpedido);
 	}
 	
 	public List<Subpedido> obtenerProductosPorPedido(long idPedido){

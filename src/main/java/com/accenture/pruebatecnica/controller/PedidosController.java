@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.HeadersBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,19 +27,12 @@ import com.accenture.pruebatecnica.model.Pedido;
 import com.accenture.pruebatecnica.model.Subpedido;
 import com.accenture.pruebatecnica.services.PedidosService;
 
+@CrossOrigin
 @RestController
 public class PedidosController {
 	
 	@Autowired
 	PedidosService pedidosService;
-
-	@GetMapping("/pedidos/{idUsuario}")
-	public List<Pedido> obtenerPedidosPorUsuario(@PathVariable long idUsuario) {
-		return pedidosService.obtenerPedidosPorUsuario(idUsuario);
-		/*URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(42).toUri();
-		return ResponseEntity.created(location).build();*/
-	}
 	
 	/*@PostMapping("/pedidos")
 	public ResponseEntity<Void> crearPedido(@RequestBody Pedido pedido){
@@ -68,6 +63,23 @@ public class PedidosController {
 		boolean exito = pedidosService.completarCarrito(idUsuario);
 		if (exito) return ResponseEntity.ok().build();
 		else return ResponseEntity.badRequest().build();
+	}
+	
+	@DeleteMapping("/carrito/{idUsuario}/{idSubpedido}")
+	public ResponseEntity<Void> borrarSubpedido(@PathVariable long idUsuario, @PathVariable long idSubpedido){
+		boolean exito = pedidosService.eliminarSubpedido(idUsuario, idSubpedido);
+		if (exito) return ResponseEntity.ok().build();
+		else return ResponseEntity.badRequest().build();
+	}
+	
+	@GetMapping("/pedidos/{idUsuario}")
+	public List<Pedido> obtenerPedidos(@PathVariable long idUsuario){
+		return pedidosService.obtenerPedidosPorUsuario(idUsuario);
+	}
+	
+	@GetMapping("/pedidos/{idUsuario}/{idPedido}")
+	public Pedido obtenerPedido(@PathVariable long idUsuario, @PathVariable long idPedido){
+		return pedidosService.obtenerPedido(idUsuario, idPedido);
 	}
 	
 	/*@RequestMapping(value="/pedido", method=RequestMethod.POST)

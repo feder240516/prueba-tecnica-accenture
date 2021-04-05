@@ -21,12 +21,12 @@ public class UsuariosService {
 		usuarios.add(new Usuario(2,"juan@gmail.com","123456","Juan Parra", "Cra 11 # 14 - 08"));
 	}
 	
-	public boolean validateUser(String email, String clave) {		
+	public long validateUser(String email, String clave) {		
 		for (Usuario usuario: usuarios) {
 			if (usuario.getEmail().equals(email)) {
-				return usuario.getClave().equals(clave);
+				return usuario.getClave().equals(clave) ? usuario.getId() : -1;
 			}
 		}
-		return false;
+		return -1;
 	}
 }

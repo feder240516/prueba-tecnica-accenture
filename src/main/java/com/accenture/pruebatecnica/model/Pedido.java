@@ -9,7 +9,8 @@ public class Pedido {
 	private long fechaCreacion;
 	private boolean completado;
 	private double precioBruto;
-	private boolean tieneRecargoDomicilio;
+	private double iva;
+	private double recargoDomicilio;
 	private double precioFinal;
 	private List<Subpedido> subpedidos;
 	private long fkIdUsuario;
@@ -23,7 +24,8 @@ public class Pedido {
 		this.precioBruto = 0;
 		this.fechaCreacion = 1;
 		this.subpedidos = new ArrayList<Subpedido>();
-		this.tieneRecargoDomicilio = false;
+		this.iva = 0;
+		this.recargoDomicilio = 0;
 		this.precioFinal = 0;
 	}
 
@@ -36,7 +38,8 @@ public class Pedido {
 		this.fkIdUsuario = fkIdUsuario;
 		
 		this.subpedidos = new ArrayList<Subpedido>();
-		this.tieneRecargoDomicilio = false;
+		this.iva = 0;
+		this.recargoDomicilio = 0;
 		this.precioFinal = 0;
 		
 	}
@@ -49,8 +52,12 @@ public class Pedido {
 		this.completado = completado;
 	}
 
-	public boolean isTieneRecargoDomicilio() {
-		return tieneRecargoDomicilio;
+	public double getRecargoDomicilio() {
+		return recargoDomicilio;
+	}
+	
+	public double getIva() {
+		return iva;
 	}
 
 	public double getPrecioFinal() {
@@ -92,12 +99,16 @@ public class Pedido {
 		this.fkIdUsuario = fkIdUsuario;
 	}
 	
-	public void addSubpedido(Producto producto, int cantidad) {
-		this.subpedidos.add(new Subpedido(producto,cantidad,0,producto.getId()));
+	public void addSubpedido(long idSubpedido, Producto producto, int cantidad) {
+		this.subpedidos.add(new Subpedido(idSubpedido, producto,cantidad,0,producto.getId()));
 	}
 	
 	public void addSubpedido(Subpedido subpedido) {
 		this.subpedidos.add(subpedido);
+	}
+	
+	public boolean eliminarSubpedido(long idSubpedido) {
+		return this.subpedidos.remove(new Subpedido(idSubpedido));
 	}
 	
 	public double calcularTotal() {
@@ -105,9 +116,15 @@ public class Pedido {
 		for(Subpedido subpedido: subpedidos) {
 			precioBruto += subpedido.calcularSubtotal();
 		}
-		tieneRecargoDomicilio = precioBruto < 100000 && precioBruto > 0;
-		precioFinal = precioBruto * 1.19 + (tieneRecargoDomicilio? 10000: 0);
+		iva = precioBruto * 0.19;
+		recargoDomicilio = (precioBruto < 100000 && precioBruto > 0) ? 10000 : 0;
+		precioFinal = precioBruto + iva + recargoDomicilio;
 		return precioFinal;
+	}
+	
+	public void calcularFecha() {
+		this.fechaCreacion = Instant.now().toEpochMilli();
+		
 	}
 	
 	public boolean vacio() {

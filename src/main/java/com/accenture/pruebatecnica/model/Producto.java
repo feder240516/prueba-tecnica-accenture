@@ -3,13 +3,13 @@ package com.accenture.pruebatecnica.model;
 public class Producto {
 	private long id;
 	private String nombre;
-	private String descripción;
+	private String descripcion;
 	private double precio;
-	public Producto(long id, String nombre, String descripción, double precio) {
+	public Producto(long id, String nombre, String descripcion, double precio) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
-		this.descripción = descripción;
+		this.descripcion = descripcion;
 		this.precio = precio;
 	}
 	public long getId() {
@@ -24,11 +24,11 @@ public class Producto {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public String getDescripción() {
-		return descripción;
+	public String getDescripcion() {
+		return descripcion;
 	}
-	public void setDescripción(String descripción) {
-		this.descripción = descripción;
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 	public double getPrecio() {
 		return precio;
